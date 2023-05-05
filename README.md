@@ -79,7 +79,7 @@ If an unauthorized client tries to accept the endpoint, the client will receive 
 
 ### 4. `GET api/questions/get-random-question`
 Gets a random question and assigns it to the user that's associated with the JWT token passed in authorization header.\
-If a user has a question assigned already, will return the question with 208 status code. If an unauthorized client tries to accept the endpoint, the client will receive response of 403 status code.
+If a user has a question assigned already, will return the question with 208 status code. If an unauthorized client tries to access the endpoint, the client will receive response of 403 status code.
 
 #### Headers
 1. Name: `Authorization`, value: `Bearer ...` (put token you got after authorizing here)
@@ -98,7 +98,7 @@ If a user has a question assigned already, will return the question with 208 sta
 Posts the answer to the pending question of the user that's associated with the JWT token passed in authorization header. 
 If the user hasn't retrieved the question or trying to answer the question that they already sent answer to, they will be notified about incorrect action.\
 A user will get 10 rating points if they answer the question correctly.\
-If a user doesn't have a question assigned already, response with status code 400 will be sent back. If a user has already answered the question, response with status code 208 will be sent back. If an unauthorized client tries to accept the endpoint, the client will receive response of 403 status code, otherwise 200.
+If a user doesn't have a question assigned already, response with status code 400 will be sent back. If a user has already answered the question, response with status code 208 will be sent back. If an unauthorized client tries to access the endpoint, the client will receive response of 403 status code, otherwise 200.
 
 
 #### Headers
@@ -124,7 +124,7 @@ If a user doesn't have a question assigned already, response with status code 40
 
 #### Description
 Gets rating of all users with positive rating value.\
-If an unauthorized client tries to accept the endpoint, the client will receive response of 403 status code, otherwise 200.
+If an unauthorized client tries to access the endpoint, the client will receive response of 403 status code, otherwise 200.
 
 #### Headers
 1. Name: `Authorization`, value: `Bearer ...` (put token you got after authorizing here)
