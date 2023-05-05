@@ -1,0 +1,36 @@
+name: Production pipeline
+
+# Controls when the workflow will run
+on: [workflow_dispatch]
+
+jobs:
+  deploy:
+    # My self-hosted action runner
+    runs-on: self-hosted
+
+    steps:
+      # Stopping and deleting docker container
+      - name: Stop QuizApi and delete its container
+        run: docker stop QUIZAPI || true && docker rm QUIZAPI || true
+      
+      # Checking out repository
+      - uses: actions/checkout@v3
+      - name: Setup Java JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'liberica'
+          java-version: '17'
+          
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+    
+      - name: Execute Gradle bootJar (spring-boot plugin task)
+        run: ./gradlew bootJar
+
+      # Build docker image
+      - name: Build docker image
+        run: docker build -t quiz_api -f Dockerfile .
+        
+      # Run docker container with specified settings
+      - name: Run application
+        run: docker run --restart unless-stopped --name QUIZAPI -d --add-host host.docker.internal:host-gateway -p 8080:8080 -e DB_NAME=${{ secrets.DB_NAME }} -e DB_HOST=${{ secrets.DB_HOST }} -e DB_USER=${{ secrets.DB_USER }} -e DB_PASS=${{ secrets.DB_PASS }} -e DB_PORT=${{ secrets.DB_PORT }} -e JWT_SECRET=${{ secrets.JWT_SECRET }} quiz_api
