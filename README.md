@@ -103,6 +103,7 @@ If a user doesn't have a question assigned already, response with status code 40
 
 #### Headers
 1. Name: `Authorization`, value: `Bearer ...` (put token you got after authorizing here)
+1. Name: `Content-Type`, value: `application/json`
 
 #### Body
 ```json
